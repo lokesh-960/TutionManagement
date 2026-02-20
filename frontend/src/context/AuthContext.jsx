@@ -1,0 +1,47 @@
+import { createContext, useContext, useState } from 'react'
+import api from '../api'
+
+const AuthContext = createContext(null)
+
+export function AuthProvider({ children }) {
+    const [branch, setBranch] = useState(() => {
+        const saved = localStorage.getItem('branch')
+        return saved ? JSON.parse(saved) : null
+    })
+    const [loading, setLoading] = useState(false)
+
+    const isAuthenticated = !!localStorage.getItem('access_token')
+
+    async function login(username, password) {
+        setLoading(true)
+        try {
+            const { data } = await api.post('/auth/login/', { username, password })
+            localStorage.setItem('access_token', data.access)
+            localStorage.setItem('refresh_token', data.refresh)
+            localStorage.setItem('branch', JSON.stringify(data.branch))
+            setBranch(data.branch)
+            return { success: true }
+        } catch (err) {
+            return { success: false, error: err.response?.data?.error || 'Login failed' }
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    function logout() {
+        const refreshToken = localStorage.getItem('refresh_token')
+        api.post('/auth/logout/', { refresh: refreshToken }).catch(() => { })
+        localStorage.removeItem('access_token')
+        localStorage.removeItem('refresh_token')
+        localStorage.removeItem('branch')
+        setBranch(null)
+    }
+
+    return (
+        <AuthContext.Provider value={{ branch, isAuthenticated, login, logout, loading }}>
+            {children}
+        </AuthContext.Provider>
+    )
+}
+
+export const useAuth = () => useContext(AuthContext)
