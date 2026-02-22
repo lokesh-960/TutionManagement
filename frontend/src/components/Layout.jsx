@@ -36,8 +36,8 @@ export default function Layout() {
             {/* Sidebar */}
             <aside className="sidebar">
                 <div className="sidebar-brand">
-                    <h1>📚 TuitionPro</h1>
-                    <p>{branch?.name || 'Branch'}</p>
+                    <img src="/logo.png?v=2" alt="Tuition Manager Logo" style={{ width: '100%', height: '80px', objectFit: 'contain', display: 'block', margin: '0 auto 0.5rem', background: '#fff', padding: '8px', borderRadius: '8px' }} />
+                    <p style={{ textAlign: 'center' }}>{branch?.name || 'Branch'}</p>
                 </div>
                 <nav className="sidebar-nav">
                     {navItems.map((item, i) =>

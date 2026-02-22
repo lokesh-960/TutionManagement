@@ -29,7 +29,7 @@ export default function LoginPage() {
     return (
         <div className="login-page">
             <div className="login-card">
-                <h1>📚 TuitionPro</h1>
+                <img src="/logo.png?v=2" alt="Tuition Manager Logo" style={{ height: '80px', width: '100%', objectFit: 'contain', display: 'block', margin: '0 auto 1.5rem' }} />
                 <p className="subtitle">Multi-Branch Tuition Management</p>
 
                 {error && <div className="login-error">{error}</div>}

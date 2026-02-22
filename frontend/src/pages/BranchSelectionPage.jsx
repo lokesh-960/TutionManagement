@@ -38,7 +38,7 @@ export default function BranchSelectionPage() {
                     {theme === 'dark' ? <Moon size={20} /> : <Sun size={20} />}
                 </button>
 
-                <h1>📚 TuitionPro</h1>
+                <img src="/logo.png?v=2" alt="Tuition Manager Logo" style={{ height: '80px', width: '100%', objectFit: 'contain', display: 'block', margin: '0 auto 1.5rem' }} />
                 <p className="subtitle">Select Your Branch</p>
 
                 {loading ? (
@@ -52,8 +52,8 @@ export default function BranchSelectionPage() {
                                 onClick={() => handleSelect(b.id)}
                                 style={{ justifyContent: 'space-between', padding: '1rem', textAlign: 'left' }}
                             >
-                                <span style={{ fontWeight: 600 }}>{b.name}</span>
-                                <span style={{ opacity: 0.5 }}>➜</span>
+                                <span style={{ fontWeight: 800, fontSize: '1.6rem' }}>{b.name}</span>
+                                <span style={{ opacity: 0.5, fontSize: '1.6rem' }}>➜</span>
                             </button>
                         ))}
                     </div>
