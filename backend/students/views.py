@@ -70,3 +70,52 @@ class StudentDetailView(generics.RetrieveUpdateDestroyAPIView):
             action_type='student_deleted',
             description=f'Student "{name}" deleted',
         )
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
+from fees.models import FeeRecord
+import datetime
+
+class StudentToggleFeeView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        branch = request.user.branch
+        student = get_object_or_404(Student, pk=pk, branch=branch)
+        
+        today = datetime.date.today()
+        # Find the fee record for the current month
+        fee_record = FeeRecord.objects.filter(student=student, month=today.month, year=today.year).first()
+        
+        if not fee_record:
+            # If there's no fee record for the current month, create one as unpaid
+            fee_record = FeeRecord.objects.create(
+                student=student,
+                month=today.month,
+                year=today.year,
+                amount=student.monthly_fee,
+                status='due',
+                payment_date=None
+            )
+            
+        # Toggle status
+        if fee_record.status == 'paid':
+            fee_record.status = 'due'
+            fee_record.payment_date = None
+            action_desc = f'Marked fee for {student.name} as due'
+        else:
+            fee_record.status = 'paid'
+            fee_record.payment_date = today
+            action_desc = f'Marked fee for {student.name} as paid'
+            
+        fee_record.save()
+        
+        ActivityLog.objects.create(
+            branch=branch,
+            action_type='fee_payment',
+            description=action_desc,
+            student=student,
+        )
+        
+        return Response({'status': 'success', 'fee_status': fee_record.status})

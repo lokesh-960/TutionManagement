@@ -79,6 +79,19 @@ export default function StudentProfilePage() {
             : `${API_BASE}${student.profile_photo}`
     }
 
+    const togglePaymentStatus = async () => {
+        try {
+            await api.post(`/students/${id}/toggle_current_month_fee/`)
+            showToast('Payment status updated')
+            // Refresh student data to get the updated status
+            const res = await api.get(`/students/${id}/`)
+            setStudent(res.data)
+            setForm(res.data)
+        } catch {
+            showToast('Failed to update payment status')
+        }
+    }
+
     if (loading) return <p>Loading...</p>
     if (!student) return <p>Student not found.</p>
 
@@ -94,8 +107,10 @@ export default function StudentProfilePage() {
                     <h2 style={{ fontSize: '1.5rem', fontWeight: 700, margin: 0 }}>Student Profile</h2>
                 </div>
                 <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <button onClick={togglePaymentStatus} className={`btn btn-sm ${student.current_month_fee_status === 'paid' ? 'btn-success' : 'btn-danger'}`}>
+                        {student.current_month_fee_status === 'paid' ? 'Paid' : 'Unpaid'}
+                    </button>
                     <a href={`tel:${student.parent_phone}`} className="btn btn-primary btn-sm">📞 Call Parent</a>
-                    <Link to={`/app/students/${id}/payments`} className="btn btn-outline btn-sm">💰 Payments</Link>
                 </div>
             </div>
 

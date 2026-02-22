@@ -1,34 +1,40 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { Moon, Sun } from 'lucide-react'
 import { useTheme } from '../context/ThemeContext'
+
 export default function BranchSelectionPage() {
-    const [branches, setBranches] = useState([])
-    const [loading, setLoading] = useState(true)
-    const navigate = useNavigate()
     const { theme, toggleTheme } = useTheme()
+    const navigate = useNavigate()
+    const [showBranches, setShowBranches] = useState(false)
+    const [branches, setBranches] = useState([])
+    const [loading, setLoading] = useState(false)
 
-    useEffect(() => {
-        axios.get('http://localhost:8000/api/auth/branches/')
-            .then(res => {
+    const handleLoginClick = async () => {
+        if (!showBranches) {
+            setLoading(true)
+            setShowBranches(true)
+            try {
+                const res = await axios.get('http://localhost:8000/api/auth/branches/')
                 setBranches(res.data)
+            } catch (err) {
+                console.error('Failed to load branches', err)
+            } finally {
                 setLoading(false)
-            })
-            .catch(err => {
-                console.error(err)
-                setLoading(false)
-            })
-    }, [])
+            }
+        } else {
+            setShowBranches(false)
+        }
+    }
 
-    const handleSelect = (branchId) => {
-        // We can pass the selected branch to the login page via state
+    const handleSelectBranch = (branchId) => {
         navigate('/login', { state: { branchId } })
     }
 
     return (
         <div className="login-page">
-            <div className="login-card" style={{ maxWidth: 500, position: 'relative' }}>
+            <div className="login-card" style={{ maxWidth: 450, position: 'relative', textAlign: 'center' }}>
                 <button
                     className="btn btn-icon"
                     onClick={toggleTheme}
@@ -38,33 +44,52 @@ export default function BranchSelectionPage() {
                     {theme === 'dark' ? <Moon size={20} /> : <Sun size={20} />}
                 </button>
 
-                <img src="/logo.png?v=2" alt="Tuition Manager Logo" style={{ height: '80px', width: '100%', objectFit: 'contain', display: 'block', margin: '0 auto 1.5rem' }} />
-                <p className="subtitle">Select Your Branch</p>
+                <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Welcome to TuitionPro</h1>
+                <p className="subtitle" style={{ marginBottom: '2rem' }}>Manage your tuition center efficiently.</p>
 
-                {loading ? (
-                    <p>Loading branches...</p>
+                {!showBranches ? (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                        <button onClick={handleLoginClick} className="btn btn-primary" style={{ padding: '1rem', fontSize: '1.1rem', justifyContent: 'center' }}>
+                            Login to Your Account
+                        </button>
+
+                        <Link to="/signup" className="btn btn-outline" style={{ padding: '1rem', fontSize: '1.1rem', justifyContent: 'center' }}>
+                            Create New Account
+                        </Link>
+                    </div>
                 ) : (
-                    <div className="branch-list" style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                        {branches.map(b => (
-                            <button
-                                key={b.id}
-                                className="btn btn-outline"
-                                onClick={() => handleSelect(b.id)}
-                                style={{ justifyContent: 'space-between', padding: '1rem', textAlign: 'left' }}
-                            >
-                                <span style={{ fontWeight: 800, fontSize: '1.6rem' }}>{b.name}</span>
-                                <span style={{ opacity: 0.5, fontSize: '1.6rem' }}>➜</span>
-                            </button>
-                        ))}
+                    <div>
+                        <p style={{ marginBottom: '1rem', fontWeight: 600 }}>Select your account to login:</p>
+
+                        {loading ? (
+                            <p style={{ margin: '2rem 0', color: 'var(--color-text-muted)' }}>Loading accounts...</p>
+                        ) : branches.length === 0 ? (
+                            <p style={{ margin: '2rem 0', color: 'var(--color-text-muted)' }}>No accounts found. Please create one.</p>
+                        ) : (
+                            <div className="branch-list" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', maxHeight: '300px', overflowY: 'auto', paddingRight: '0.5rem' }}>
+                                {branches.map(b => (
+                                    <button
+                                        key={b.id}
+                                        className="btn btn-outline"
+                                        onClick={() => handleSelectBranch(b.id)}
+                                        style={{ justifyContent: 'space-between', padding: '1rem', textAlign: 'left', display: 'flex', alignItems: 'center' }}
+                                    >
+                                        <span style={{ fontWeight: 700, fontSize: '1.1rem' }}>{b.name}</span>
+                                        <span style={{ opacity: 0.5 }}>➜</span>
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+
+                        <button
+                            className="btn btn-outline"
+                            onClick={() => setShowBranches(false)}
+                            style={{ marginTop: '1.5rem', width: '100%', justifyContent: 'center' }}
+                        >
+                            ← Back
+                        </button>
                     </div>
                 )}
-
-                <div style={{ marginTop: '2rem', borderTop: '1px solid var(--color-border)', paddingTop: '1.5rem' }}>
-                    <p style={{ marginBottom: '1rem', fontSize: '0.9rem' }}>New to TuitionPro?</p>
-                    <Link to="/signup" className="btn btn-primary" style={{ display: 'block', textAlign: 'center' }}>
-                        Create New Branch
-                    </Link>
-                </div>
             </div>
         </div>
     )

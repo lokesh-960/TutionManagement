@@ -36,8 +36,8 @@ export default function Layout() {
             {/* Sidebar */}
             <aside className="sidebar">
                 <div className="sidebar-brand">
-                    <img src="/logo.png?v=2" alt="Tuition Manager Logo" style={{ width: '100%', height: '80px', objectFit: 'contain', display: 'block', margin: '0 auto 0.5rem', background: '#fff', padding: '8px', borderRadius: '8px' }} />
-                    <p style={{ textAlign: 'center' }}>{branch?.name || 'Branch'}</p>
+                    <img src="/logo.png?v=2" alt="Tuition Manager Logo" style={{ width: '100%', height: '120px', objectFit: 'contain', display: 'block', margin: '0 auto 0.5rem', background: '#fff', padding: '8px', borderRadius: '8px' }} />
+                    <p style={{ textAlign: 'center', fontSize: '1.25rem', fontWeight: 'bold' }}>{branch?.name || 'Branch'}</p>
                 </div>
                 <nav className="sidebar-nav">
                     {navItems.map((item, i) =>
@@ -66,7 +66,9 @@ export default function Layout() {
             {/* Main */}
             <main className="main-content">
                 <div className="topbar">
-                    <div />
+                    <div style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--color-text-muted)', display: 'flex', alignItems: 'center' }}>
+                        📅 {new Date().toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' })}
+                    </div>
                     <div className="topbar-actions">
                         <button className="theme-toggle" onClick={toggleTheme} title="Toggle theme">
                             {theme === 'dark' ? '☀️' : '🌙'}
