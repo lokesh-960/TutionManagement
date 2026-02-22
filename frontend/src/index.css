@@ -3,21 +3,21 @@
 /* ── Design tokens ────────────────────────────────────── */
 :root {
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --color-primary: #6366f1;
-  --color-primary-light: #818cf8;
-  --color-primary-dark: #4f46e5;
+  --color-primary: #0d9488;
+  --color-primary-light: #14b8a6;
+  --color-primary-dark: #0f766e;
   --color-accent: #10b981;
   --color-danger: #ef4444;
   --color-warning: #f59e0b;
-  --color-bg: #f8fafc;
+  --color-bg: #e2e8f0;
   --color-surface: #ffffff;
   --color-text: #0f172a;
   --color-text-muted: #64748b;
-  --color-border: #e2e8f0;
-  --color-sidebar-bg: #1e1b4b;
-  --color-sidebar-text: #e0e7ff;
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.3);
+  --color-border: #cbd5e1;
+  --color-sidebar-bg: #ffffff;
+  --color-sidebar-text: #334155;
+  --glass-bg: rgba(255, 255, 255, 1);
+  --glass-border: #cbd5e1;
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
@@ -33,7 +33,7 @@
   --color-text-muted: #94a3b8;
   --color-border: #334155;
   --glass-bg: rgba(26, 23, 48, 0.8);
-  --glass-border: rgba(99, 102, 241, 0.15);
+  --glass-border: rgba(14, 165, 233, 0.15);
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
@@ -109,7 +109,7 @@ body {
 .sidebar-brand h1 {
   font-size: 1.25rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #818cf8, #c084fc);
+  background: linear-gradient(135deg, #0d9488, #0f766e);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -118,7 +118,7 @@ body {
 
 .sidebar-brand p {
   font-size: 0.75rem;
-  color: #a5b4fc;
+  color: #64748b;
   margin: 0.25rem 0 0;
   opacity: 0.7;
 }
@@ -151,12 +151,12 @@ body {
 }
 
 .sidebar-link:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: #f8fafc;
 }
 
 .sidebar-link.active {
-  background: rgba(99, 102, 241, 0.25);
-  color: #c7d2fe;
+  background: rgba(14, 165, 233, 0.25);
+  color: #0f766e;
 }
 
 .sidebar-link svg {
@@ -170,7 +170,7 @@ body {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: #818cf8;
+  color: #14b8a6;
   padding: 1rem 0.75rem 0.25rem;
 }
 
@@ -253,7 +253,8 @@ body {
 .btn-outline {
   background: transparent;
   border: 1.5px solid var(--color-border);
-  color: var(--color-text);
+  color: inherit;
+  /* Also explicitly target the text inner span */
 }
 
 .btn-outline:hover {
@@ -281,7 +282,7 @@ body {
 
 .btn-icon:hover {
   background: var(--color-primary);
-  color: white;
+  color: #0f172a;
   border-color: var(--color-primary);
 }
 
@@ -337,7 +338,7 @@ body {
 }
 
 .kpi-card.purple::before {
-  background: linear-gradient(90deg, #6366f1, #a78bfa);
+  background: linear-gradient(90deg, #0d9488, #a78bfa);
 }
 
 .kpi-card.green::before {
@@ -413,7 +414,7 @@ tr:not(:last-child) td {
 }
 
 tr:hover td {
-  background: rgba(99, 102, 241, 0.04);
+  background: rgba(14, 165, 233, 0.04);
 }
 
 /* ── Badges ───────────────────────────────────────────── */
@@ -505,7 +506,7 @@ tr:hover td {
 .form-input:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
 }
 
 .form-row {
@@ -520,7 +521,7 @@ tr:hover td {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
+  background: var(--color-bg);
   padding: 1rem;
 }
 
@@ -528,19 +529,19 @@ tr:hover td {
   width: 100%;
   max-width: 420px;
   padding: 2.5rem;
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--glass-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--glass-border);
   border-radius: 20px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--shadow-lg);
 }
 
 .login-card h1 {
   text-align: center;
   font-size: 1.75rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #c7d2fe, #a5b4fc, #818cf8);
+  background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary), var(--color-primary-light));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -549,35 +550,35 @@ tr:hover td {
 
 .login-card .subtitle {
   text-align: center;
-  color: #a5b4fc;
+  color: var(--color-text-muted);
   font-size: 0.85rem;
   margin-bottom: 2rem;
   opacity: 0.8;
 }
 
 .login-card .form-input {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.12);
-  color: white;
+  background: var(--color-bg);
+  border-color: var(--color-border);
+  color: var(--color-text);
 }
 
 .login-card .form-input::placeholder {
-  color: rgba(165, 180, 252, 0.5);
+  color: var(--color-text-muted);
 }
 
 .login-card .form-input:focus {
-  border-color: #818cf8;
-  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.2);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.2);
 }
 
 .login-card label {
-  color: #c7d2fe;
+  color: var(--color-text-muted);
 }
 
 .login-btn {
   width: 100%;
   padding: 0.85rem;
-  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  background: linear-gradient(135deg, #0d9488, #0f766e);
   color: white;
   border: none;
   border-radius: var(--radius-sm);
@@ -590,7 +591,7 @@ tr:hover td {
 }
 
 .login-btn:hover {
-  background: linear-gradient(135deg, #818cf8, #6366f1);
+  background: linear-gradient(135deg, #14b8a6, #0d9488);
   transform: translateY(-1px);
 }
 
@@ -705,7 +706,7 @@ tr:hover td {
 .search-input:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
 }
 
 /* ── Profile card ─────────────────────────────────────── */
@@ -720,7 +721,7 @@ tr:hover td {
   width: 70px;
   height: 70px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #6366f1, #a78bfa);
+  background: linear-gradient(135deg, #0d9488, #a78bfa);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -838,7 +839,7 @@ tr:hover td {
 .notify-form textarea:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
 }
 
 /* ── Toast ────────────────────────────────────────────── */
@@ -943,4 +944,14 @@ tr:hover td {
     padding-left: 0 !important;
     padding-top: 1.5rem;
   }
+}
+
+.login-card .btn-outline {
+  color: inherit;
+  /* Also explicitly target the text inner span */
+}
+
+
+.branch-list button span {
+  color: var(--color-text);
 }

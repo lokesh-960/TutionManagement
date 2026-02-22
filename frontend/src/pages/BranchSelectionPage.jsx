@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
-
+import { Moon, Sun } from 'lucide-react'
+import { useTheme } from '../context/ThemeContext'
 export default function BranchSelectionPage() {
     const [branches, setBranches] = useState([])
     const [loading, setLoading] = useState(true)
     const navigate = useNavigate()
+    const { theme, toggleTheme } = useTheme()
 
     useEffect(() => {
         axios.get('http://localhost:8000/api/auth/branches/')
@@ -26,7 +28,16 @@ export default function BranchSelectionPage() {
 
     return (
         <div className="login-page">
-            <div className="login-card" style={{ maxWidth: 500 }}>
+            <div className="login-card" style={{ maxWidth: 500, position: 'relative' }}>
+                <button
+                    className="btn btn-icon"
+                    onClick={toggleTheme}
+                    style={{ position: 'absolute', top: '1.25rem', right: '1.25rem' }}
+                    title="Toggle theme"
+                >
+                    {theme === 'dark' ? <Moon size={20} /> : <Sun size={20} />}
+                </button>
+
                 <h1>📚 TuitionPro</h1>
                 <p className="subtitle">Select Your Branch</p>
 
