@@ -14,8 +14,8 @@ class BranchListView(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
-        branches = Branch.objects.only('id', 'name').all()
-        data = [{'id': b.id, 'name': b.name} for b in branches]
+        branches = Branch.objects.select_related('user').all()
+        data = [{'id': b.id, 'name': b.name, 'username': b.user.username} for b in branches]
         return Response(data)
 
 
