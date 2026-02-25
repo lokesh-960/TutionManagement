@@ -12,10 +12,10 @@ export function AuthProvider({ children }) {
 
     const isAuthenticated = !!localStorage.getItem('access_token')
 
-    async function login(username, password) {
+    async function login(mobile, password) {
         setLoading(true)
         try {
-            const { data } = await api.post('/auth/login/', { username, password })
+            const { data } = await api.post('/auth/login/', { mobile, password })
             localStorage.setItem('access_token', data.access)
             localStorage.setItem('refresh_token', data.refresh)
             localStorage.setItem('branch', JSON.stringify(data.branch))

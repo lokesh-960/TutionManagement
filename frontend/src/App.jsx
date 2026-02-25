@@ -4,6 +4,7 @@ import Layout from './components/Layout'
 import BranchSelectionPage from './pages/BranchSelectionPage'
 import SignupPage from './pages/SignupPage'
 import HistoryPage from './pages/HistoryPage'
+import ForgotPasswordPage from './pages/ForgotPasswordPage'
 
 import LoginPage from './pages/LoginPage'
 import DashboardPage from './pages/DashboardPage'
@@ -25,6 +26,7 @@ export default function App() {
             <Route path="/" element={<BranchSelectionPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/app" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
                 <Route index element={<Navigate to="/app/dashboard" replace />} />
                 <Route path="dashboard" element={<DashboardPage />} />

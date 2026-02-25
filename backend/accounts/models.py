@@ -6,6 +6,7 @@ class Branch(models.Model):
     """Each Branch maps to a Django User for authentication."""
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='branch')
     name = models.CharField(max_length=200)
+    mobile = models.CharField(max_length=15, unique=True, null=True, blank=True)
     language = models.CharField(max_length=10, default='en', choices=[
         ('en', 'English'),
         ('hi', 'Hindi'),
@@ -23,3 +24,11 @@ class Branch(models.Model):
 
     def __str__(self):
         return self.name
+
+class OTPReset(models.Model):
+    mobile = models.CharField(max_length=15)
+    otp = models.CharField(max_length=6)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"{self.mobile} - {self.otp}"

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import LoginView, LogoutView, BranchProfileView, BranchListView, SignupView
+from .views import LoginView, LogoutView, BranchProfileView, BranchListView, SignupView, RequestOTPView, VerifyOTPAndResetPasswordView, DeleteAccountView
 from .dashboard import DashboardView
 
 urlpatterns = [
@@ -8,5 +8,8 @@ urlpatterns = [
     path('auth/login/', LoginView.as_view(), name='login'),
     path('auth/logout/', LogoutView.as_view(), name='logout'),
     path('auth/profile/', BranchProfileView.as_view(), name='profile'),
+    path('auth/request-otp/', RequestOTPView.as_view(), name='request-otp'),
+    path('auth/reset-password/', VerifyOTPAndResetPasswordView.as_view(), name='reset-password'),
+    path('auth/delete-account/', DeleteAccountView.as_view(), name='delete-account'),
     path('dashboard/', DashboardView.as_view(), name='dashboard'),
 ]

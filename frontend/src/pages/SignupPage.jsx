@@ -4,7 +4,7 @@ import axios from 'axios'
 import { useAuth } from '../context/AuthContext'
 
 export default function SignupPage() {
-    const [form, setForm] = useState({ branch_name: '', username: '', password: '' })
+    const [form, setForm] = useState({ branch_name: '', mobile: '', password: '' })
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
@@ -27,7 +27,7 @@ export default function SignupPage() {
             // Let's rely on standard login flow or simple reload.
             window.location.href = '/dashboard'
         } catch (err) {
-            setError(err.response?.data?.username?.[0] || 'Signup failed')
+            setError(err.response?.data?.mobile?.[0] || 'Signup failed')
             setLoading(false)
         }
     }
@@ -46,8 +46,8 @@ export default function SignupPage() {
                         <input className="form-input" value={form.branch_name} onChange={e => setForm({ ...form, branch_name: e.target.value })} required />
                     </div>
                     <div className="form-group">
-                        <label>Admin Username</label>
-                        <input className="form-input" value={form.username} onChange={e => setForm({ ...form, username: e.target.value })} required />
+                        <label>Mobile Number</label>
+                        <input className="form-input" type="tel" value={form.mobile} onChange={e => setForm({ ...form, mobile: e.target.value })} required />
                     </div>
                     <div className="form-group">
                         <label>Password</label>
