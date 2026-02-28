@@ -1,11 +1,20 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import api from '../api'
 
 export default function CircularPage() {
     const [title, setTitle] = useState('')
     const [body, setBody] = useState('')
+    const [targetClass, setTargetClass] = useState('All')
+    const [classes, setClasses] = useState([])
     const [toast, setToast] = useState('')
     const [sending, setSending] = useState(false)
+
+    useEffect(() => {
+        api.get('/students/').then((res) => {
+            const uniqueClasses = [...new Set(res.data.map(s => s.standard))]
+            setClasses(uniqueClasses)
+        }).catch(() => { })
+    }, [])
 
     const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(''), 3000) }
 
@@ -14,10 +23,11 @@ export default function CircularPage() {
         if (!title.trim()) { showToast('Title is required'); return }
         setSending(true)
         try {
-            const { data } = await api.post('/notifications/circular/', { title, body })
+            const { data } = await api.post('/notifications/circular/', { title, body, target_class: targetClass })
             showToast(data.message)
             setTitle('')
             setBody('')
+            setTargetClass('All')
         } catch { showToast('Failed to send circular') }
         setSending(false)
     }
@@ -41,6 +51,18 @@ export default function CircularPage() {
                             />
                         </div>
                         <div className="form-group">
+                            <label>Target Audience</label>
+                            <select
+                                className="form-input"
+                                value={targetClass}
+                                onChange={(e) => setTargetClass(e.target.value)}
+                                id="circular-target"
+                            >
+                                <option value="All">All Parents</option>
+                                {classes.map(c => <option key={c} value={c}>Class {c}</option>)}
+                            </select>
+                        </div>
+                        <div className="form-group">
                             <label>Message Body</label>
                             <textarea
                                 placeholder="Write your circular message here..."
@@ -50,7 +72,7 @@ export default function CircularPage() {
                             />
                         </div>
                         <button className="btn btn-primary" type="submit" disabled={sending} id="circular-send">
-                            {sending ? 'Sending...' : '📢 Send Circular to All Parents'}
+                            {sending ? 'Sending...' : '📢 Send Circular'}
                         </button>
                     </form>
                 </div>

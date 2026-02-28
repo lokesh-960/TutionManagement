@@ -34,17 +34,27 @@ class CircularView(APIView):
     def post(self, request):
         title = request.data.get('title', '')
         body = request.data.get('body', '')
+        target_class = request.data.get('target_class', 'All')
 
         branch = request.user.branch
-        student_count = branch.students.filter(is_active=True).count()
+        students_query = branch.students.filter(is_active=True)
+        
+        if target_class and target_class != 'All':
+            students_query = students_query.filter(standard=target_class)
+            target_desc = f'class {target_class}'
+        else:
+            target_desc = 'all active students'
+
+        student_count = students_query.count()
 
         ActivityLog.objects.create(
             branch=branch,
             action_type='notification_sent',
-            description=f'Circular "{title}" sent to {student_count} parent(s)',
+            description=f'Circular "{title}" sent to {student_count} parent(s) in {target_desc}',
         )
 
         return Response({
             'message': f'Circular sent to {student_count} parent(s) (mocked)',
             'title': title,
+            'target': target_class,
         })

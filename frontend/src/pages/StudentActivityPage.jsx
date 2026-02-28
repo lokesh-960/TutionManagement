@@ -43,7 +43,7 @@ export default function StudentActivityPage() {
                 <h2 style={{ fontSize: '1.5rem', fontWeight: 700, margin: 0 }}>
                     Activity — {student?.name}
                 </h2>
-                <Link to={`/students/${id}`} className="btn btn-outline btn-sm">← Back to Profile</Link>
+                <Link to={`/app/students/${id}`} className="btn btn-outline btn-sm">← Back to Profile</Link>
             </div>
 
             <div className="card">

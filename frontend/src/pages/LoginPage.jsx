@@ -22,55 +22,10 @@ export default function LoginPage() {
         setError('')
         const result = await login(mobile, password)
         if (result.success) {
-            navigate('/app/dashboard')
+            window.location.href = '/app/dashboard'
         } else {
             setError(result.error)
         }
-    }
-
-    const handleDeleteAccount = async () => {
-        if (!mobile || !password) {
-            setError('Mobile and password are required to delete the account.')
-            return
-        }
-
-        setIsDeleting(true)
-        setError('')
-        try {
-            // Because we pass mobile/password we need to auth it natively before deletion
-            const res = await fetch('http://localhost:8000/api/auth/delete-account/', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ mobile, password })
-            })
-
-            const data = await res.json()
-            if (!res.ok) {
-                throw new Error(data.error || 'Failed to delete account')
-            }
-
-            setSuccessMsg(data.message || 'Account successfully deleted.')
-            setTimeout(() => navigate('/'), 3000)
-
-        } catch (err) {
-            setError(err.message)
-        } finally {
-            setIsDeleting(false)
-            setShowDeletePrompt(false)
-        }
-    }
-
-    if (successMsg) {
-        return (
-            <div className="login-page">
-                <div className="login-card" style={{ textAlign: 'center' }}>
-                    <div style={{ color: 'var(--color-danger)', fontSize: '3rem', marginBottom: '1rem' }}>🗑️</div>
-                    <h2 style={{ marginBottom: '1rem' }}>Account Deleted</h2>
-                    <p>{successMsg}</p>
-                    <p style={{ marginTop: '2rem', fontSize: '0.9rem', color: 'var(--color-text-muted)' }}>Redirecting...</p>
-                </div>
-            </div>
-        )
     }
 
     return (
