@@ -12,6 +12,7 @@ import StudentListPage from './pages/StudentListPage'
 import AddStudentPage from './pages/AddStudentPage'
 import StudentProfilePage from './pages/StudentProfilePage'
 import PaymentHistoryPage from './pages/PaymentHistoryPage'
+import StudentActivityPage from './pages/StudentActivityPage'
 import DueNotifyPage from './pages/DueNotifyPage'
 import CircularPage from './pages/CircularPage'
 
@@ -39,6 +40,7 @@ export default function App() {
                 <Route path="students/add" element={<AddStudentPage />} />
                 <Route path="students/:id" element={<StudentProfilePage />} />
                 <Route path="students/:id/payments" element={<PaymentHistoryPage />} />
+                <Route path="students/:id/activity" element={<StudentActivityPage />} />
                 <Route path="history" element={<HistoryPage />} />
                 <Route path="notifications/due" element={<DueNotifyPage />} />
                 <Route path="notifications/circular" element={<CircularPage />} />

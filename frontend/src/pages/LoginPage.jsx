@@ -21,7 +21,9 @@ export default function LoginPage() {
         e.preventDefault()
         setError('')
         const result = await login(mobile, password)
-        if (!result.success) {
+        if (result.success) {
+            window.location.href = '/app/dashboard'
+        } else {
             setError(result.error)
         }
     }

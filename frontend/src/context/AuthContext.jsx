@@ -4,6 +4,7 @@ import api from '../api'
 const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
+    const [token, setToken] = useState(() => localStorage.getItem('access_token'))
     const [branch, setBranch] = useState(() => {
         const saved = localStorage.getItem('branch')
         // Default fallback branch so the UI doesn't crash if no branch object exists
@@ -41,8 +42,16 @@ export function AuthProvider({ children }) {
         setBranch(null)
     }
 
+    function setAuthData(data) {
+        localStorage.setItem('access_token', data.access)
+        localStorage.setItem('refresh_token', data.refresh)
+        localStorage.setItem('branch', JSON.stringify(data.branch))
+        setToken(data.access)
+        setBranch(data.branch)
+    }
+
     return (
-        <AuthContext.Provider value={{ branch, isAuthenticated, login, logout, loading }}>
+        <AuthContext.Provider value={{ branch, isAuthenticated, login, logout, loading, setAuthData }}>
             {children}
         </AuthContext.Provider>
     )

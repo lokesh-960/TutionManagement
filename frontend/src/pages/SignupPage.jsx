@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import axios from 'axios'
+import api from '../api'
 import { useAuth } from '../context/AuthContext'
 
 export default function SignupPage() {
@@ -8,7 +8,7 @@ export default function SignupPage() {
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
-    const { login } = useAuth() // We can use login logic or manually handle the token response
+    const { setAuthData } = useAuth()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -16,18 +16,13 @@ export default function SignupPage() {
         setError('')
 
         try {
-            const res = await axios.post('http://localhost:8000/api/auth/signup/', form)
-            // Auto login logic: set token and redirect
-            localStorage.setItem('access_token', res.data.access)
-            localStorage.setItem('refresh_token', res.data.refresh)
-            localStorage.setItem('branch', JSON.stringify(res.data.branch))
-            // Force reload or just navigate (AppContext reads from localStorage on init, but we might need to update state)
-            // Ideally, we should use a `setAuth` method in context. 
-            // For now, simple navigation might not update Context immediately if it only reads on mount.
-            // Let's rely on standard login flow or simple reload.
-            window.location.href = '/dashboard'
+            const res = await api.post('/auth/signup/', form)
+            // Auto login logic: update context and navigate seamlessly
+            setAuthData(res.data)
+            window.location.href = '/app/dashboard'
         } catch (err) {
-            setError(err.response?.data?.mobile?.[0] || 'Signup failed')
+            const errorMsg = err.response?.data?.mobile?.[0] || err.response?.data?.error || err.response?.data?.detail || err.message || 'Signup failed'
+            setError(errorMsg)
             setLoading(false)
         }
     }

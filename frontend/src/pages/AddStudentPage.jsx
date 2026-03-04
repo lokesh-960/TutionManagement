@@ -66,7 +66,7 @@ export default function AddStudentPage() {
                             <button className="btn btn-primary" type="submit" disabled={saving} id="student-submit">
                                 {saving ? 'Saving...' : 'Add Student'}
                             </button>
-                            <button className="btn btn-outline" type="button" onClick={() => navigate('/app/students')}>Cancel</button>
+                            <button className="btn btn-outline" type="button" onClick={() => navigate(-1)}>Cancel</button>
                         </div>
                     </form>
                 </div>

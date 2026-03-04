@@ -103,7 +103,7 @@ export default function StudentProfilePage() {
         <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                    <button className="btn btn-outline btn-sm" onClick={() => navigate('/app/students')}>← Back</button>
+                    <button className="btn btn-outline btn-sm" onClick={() => navigate(-1)}>← Back</button>
                     <h2 style={{ fontSize: '1.5rem', fontWeight: 700, margin: 0 }}>Student Profile</h2>
                 </div>
                 <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -233,6 +233,10 @@ export default function StudentProfilePage() {
                             <div className="profile-field"><label>Phone</label><span>{student.parent_phone}</span></div>
                             <div className="profile-field"><label>Monthly Fee</label><span>₹{Number(student.monthly_fee).toLocaleString()}</span></div>
                             <div className="profile-field"><label>Status</label><span className={`badge ${student.is_active ? 'badge-active' : 'badge-inactive'}`}>{student.is_active ? 'Active' : 'Inactive'}</span></div>
+                        </div>
+                        <div style={{ padding: '0 1.25rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1.25rem' }}>
+                            <Link to={`/app/students/${id}/payments`} className="btn btn-outline btn-sm">💰 Payment History</Link>
+                            <Link to={`/app/students/${id}/activity`} className="btn btn-outline btn-sm">📜 Activity Log</Link>
                         </div>
                         <div style={{ padding: '0 1.25rem 1.25rem', display: 'flex', gap: '0.5rem' }}>
                             <button className="btn btn-primary btn-sm" onClick={() => setEditing(true)}>✏️ Edit</button>

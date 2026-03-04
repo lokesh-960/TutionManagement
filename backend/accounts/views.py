@@ -67,18 +67,19 @@ class LoginView(APIView):
         # Fallback: if mobile differs from user.username for older accounts
         if user is None:
             try:
-                branch_by_mobile = Branch.objects.get(mobile=mobile)
-                user = authenticate(username=branch_by_mobile.user.username, password=password)
-            except Branch.DoesNotExist:
+                # Some branches might have 'mobile' field set but username is different
+                branch_by_mobile = Branch.objects.filter(mobile=mobile).first()
+                if branch_by_mobile:
+                    user = authenticate(username=branch_by_mobile.user.username, password=password)
+            except Exception:
                 pass
 
         if user is None:
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
-        try:
-            branch = Branch.objects.get(user=user)
-        except Branch.DoesNotExist:
-             return Response({'error': 'User is not associated with a branch'}, status=status.HTTP_403_FORBIDDEN)
+        branch = Branch.objects.filter(user=user).first()
+        if not branch:
+             return Response({'error': f'User {user.username} is not associated with a branch'}, status=status.HTTP_403_FORBIDDEN)
 
         refresh = RefreshToken.for_user(user)
         # Optional: Add custom claims if needed, e.g.
