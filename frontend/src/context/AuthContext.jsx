@@ -11,7 +11,7 @@ export function AuthProvider({ children }) {
         return saved ? JSON.parse(saved) : { id: 1, name: 'Default Branch', fee_due_day: 5 }
     })
     const [loading, setLoading] = useState(false)
-    const [token, setToken] = useState(() => localStorage.getItem('access_token'))
+
 
     const isAuthenticated = !!token
 
