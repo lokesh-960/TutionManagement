@@ -17,7 +17,12 @@ import CircularPage from './pages/CircularPage'
 
 function ProtectedRoute({ children }) {
     const { isAuthenticated } = useAuth()
-    return isAuthenticated ? children : <Navigate to="/login" replace />
+
+    if (!isAuthenticated) {
+        return <Navigate to="/" replace />
+    }
+
+    return children
 }
 
 export default function App() {
@@ -33,7 +38,6 @@ export default function App() {
                 <Route path="students" element={<StudentListPage />} />
                 <Route path="students/add" element={<AddStudentPage />} />
                 <Route path="students/:id" element={<StudentProfilePage />} />
-                <Route path="students/:id/payments" element={<PaymentHistoryPage />} />
                 <Route path="students/:id/payments" element={<PaymentHistoryPage />} />
                 <Route path="history" element={<HistoryPage />} />
                 <Route path="notifications/due" element={<DueNotifyPage />} />

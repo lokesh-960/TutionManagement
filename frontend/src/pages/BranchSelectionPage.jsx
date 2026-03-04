@@ -1,11 +1,13 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { Moon, Sun } from 'lucide-react'
+import { useAuth } from '../context/AuthContext'
 import { useTheme } from '../context/ThemeContext'
 
 export default function BranchSelectionPage() {
     const { theme, toggleTheme } = useTheme()
+    const { isAuthenticated } = useAuth()
     const navigate = useNavigate()
     const [showBranches, setShowBranches] = useState(false)
     const [branches, setBranches] = useState([])
@@ -14,6 +16,12 @@ export default function BranchSelectionPage() {
     const [deletePassword, setDeletePassword] = useState('')
     const [deleteError, setDeleteError] = useState('')
     const [isDeleting, setIsDeleting] = useState(false)
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate('/app/dashboard', { replace: true })
+        }
+    }, [isAuthenticated, navigate])
 
     const handleLoginClick = async () => {
         if (!showBranches) {

@@ -6,11 +6,13 @@ const AuthContext = createContext(null)
 export function AuthProvider({ children }) {
     const [branch, setBranch] = useState(() => {
         const saved = localStorage.getItem('branch')
-        return saved ? JSON.parse(saved) : null
+        // Default fallback branch so the UI doesn't crash if no branch object exists
+        return saved ? JSON.parse(saved) : { id: 1, name: 'Default Branch', fee_due_day: 5 }
     })
     const [loading, setLoading] = useState(false)
+    const [token, setToken] = useState(() => localStorage.getItem('access_token'))
 
-    const isAuthenticated = !!localStorage.getItem('access_token')
+    const isAuthenticated = !!token
 
     async function login(mobile, password) {
         setLoading(true)
@@ -19,6 +21,7 @@ export function AuthProvider({ children }) {
             localStorage.setItem('access_token', data.access)
             localStorage.setItem('refresh_token', data.refresh)
             localStorage.setItem('branch', JSON.stringify(data.branch))
+            setToken(data.access)
             setBranch(data.branch)
             return { success: true }
         } catch (err) {
@@ -34,6 +37,7 @@ export function AuthProvider({ children }) {
         localStorage.removeItem('access_token')
         localStorage.removeItem('refresh_token')
         localStorage.removeItem('branch')
+        setToken(null)
         setBranch(null)
     }
 

@@ -17,12 +17,7 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
     (res) => res,
     (err) => {
-        if (err.response?.status === 401) {
-            localStorage.removeItem('access_token')
-            localStorage.removeItem('refresh_token')
-            localStorage.removeItem('branch')
-            window.location.href = '/login'
-        }
+        // Bypass 401 redirection to login
         return Promise.reject(err)
     }
 )
